@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +14,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -30,72 +31,113 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 221.2 83.2% 53.3%;
 
     --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-}
-
-@layer base {
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-editor-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-editor-muted;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-editor-progress text-white px-4 py-2 rounded-full font-medium 
+           transition-all duration-300 hover:bg-opacity-90 active:scale-[0.98]
+           disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply bg-editor-surface text-editor-text border border-editor-border px-4 py-2 
+           rounded-full font-medium transition-all duration-300 hover:bg-editor-hover 
+           active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .input-field {
+    @apply w-full border border-editor-border rounded-md px-3 py-2 
+           outline-none focus:ring-2 focus:ring-editor-progress focus:ring-opacity-50
+           transition-all duration-200 bg-editor-surface text-editor-text placeholder:text-editor-muted;
+  }
+
+  .video-control-button {
+    @apply flex items-center justify-center w-10 h-10 rounded-full 
+           bg-editor-surface text-editor-text transition-all duration-200
+           hover:bg-editor-hover active:scale-95;
+  }
+
+  .chip {
+    @apply inline-flex items-center px-2.5 py-0.5 text-xs font-medium rounded-full
+           bg-editor-hover text-editor-muted border border-editor-border;
+  }
+}
+
+.timeline-thumb {
+  @apply absolute top-0 w-1 h-full bg-editor-progress transform -translate-x-1/2;
+}
+
+.timeline-time-marker {
+  @apply absolute bottom-[calc(100%+4px)] text-[10px] text-editor-muted transform -translate-x-1/2;
+}
+
+.text-overlay-handle {
+  @apply absolute w-2 h-2 bg-editor-progress rounded-full border border-white 
+         transform -translate-x-1/2 -translate-y-1/2 cursor-move;
+}
+
+.backdrop-blur-effect {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Loading animation for video processing */
+.loading-dots div {
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.loading-dots div:nth-child(1) {
+  animation: loading-dots 0.6s infinite;
+}
+
+.loading-dots div:nth-child(2) {
+  animation: loading-dots 0.6s infinite 0.1s;
+}
+
+.loading-dots div:nth-child(3) {
+  animation: loading-dots 0.6s infinite 0.2s;
+}
+
+@keyframes loading-dots {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
   }
 }
